@@ -1,1 +1,22 @@
-Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+Scalable Video Coding (SVC) employs layered coding techniques to encode video,
+consisting of a base layer for base video quality and enhancement layers for
+improved quality. 
+
+Traditional Dynamic Adaptive Streaming over HTTP (DASH) with Advanced Video
+Coding (AVC) faces suboptimal quality adaptation. SVC addresses this challenge
+by enabling in-segment quality adjustments due to its layered structure,
+allowing for smoother quality degradation.
+
+A detailed study of the SVC layered coding structure shows that base-layer data
+is essential for continuous playback, whereas enhancement-layer data, while
+beneficial, is not strictly required. 
+
+Our findings indicate that occasional drops in enhancement-layer data has
+minimal impact on user Quality of Experience (QoE).
+
+Building on these insights, we propose an approach that integrates SVC with a
+partially reliable transport protocol to optimize video streaming. 
+
+By prioritizing base-layer data over reliable transport channels while
+opportunistically transmitting enhancement layers, our method ensures graceful
+quality adaptation in response to network fluctuations.

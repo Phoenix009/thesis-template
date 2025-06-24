@@ -18,7 +18,6 @@
 \usepackage{tabularx}
 \usepackage{multirow}
 \usepackage{wrapfig}
-\usepackage{framed}
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage{amsthm}
@@ -33,6 +32,10 @@
 \usepackage{longtable}
 \usepackage{multicol}
 
+\usepackage{float}
+\usepackage{svg}
+\svgpath{{./images/}}
+
 
 %% Specify thesis parameters here
 %% ----------------------------------------------------------------
@@ -41,14 +44,13 @@
 \department  {Department of Computer Science}{http://www.cs.uni-saarland.de/}
 \group       {Software Engineering Chair}{http://www.st.cs.uni-saarland.de/}
 \faculty     {Faculty of Natural Sciences and Technology I}{http://www.uni-saarland.de/en/campus/faculties/faculties/faculty-6-natural-sciences-and-technology-i.html}
-\supervisor  {Your Supervisor}
-\advisor     {Your Advisor}
-\examiner    {Who will be grading your thesis}
-\secondexaminer {The second person grading your thesis}
+\supervisor  {Prof. Anja Feldmann, Ph.D.}
+\examiner    {Prof. Anja Feldmann, Ph.D.}
+\secondexaminer {Dr. Tobias Fiebig}
 \degree      {Master of Science}
 \thesiskind  {Master Thesis}
-\authors     {Your name}
-\thesistitle {The title of your thesis}
+\authors     {Jaideep More}
+\thesistitle {Practical SVC video streaming over partially realiable transport}
 \date        {\today}
 %\subject     {}
 %\keywords    {}
@@ -132,7 +134,7 @@
 %% ----------------------------------------------------------------
 \begin{acknowledgements}
 
-Thx Mom+Dad $<3$
+\todo{Complete acknowledgements}
 
 \end{acknowledgements}
 \cleardoublepage
@@ -142,6 +144,9 @@ Thx Mom+Dad $<3$
 %% ----------------------------------------------------------------
 
 \tableofcontents
+\clearpage
+
+\todo{We want to put an abbreviations section}
 \clearpage
 
 %% The Dedication page
@@ -158,11 +163,18 @@ Thx Mom+Dad $<3$
 % Include the chapters of the thesis, as separate files (careful of case-sensitivity and spaces in filenames)
 % Capitalized chaptertitles generally look better
 
-\loadchapter{Introduction}{This is a Chapter title}
-\loadchapter{Motivation}{Motivation}
+% \loadchapter{path}{title}
+% \loadchapter{Scratch}{Scratch}
+\loadchapter{Introduction}{Introduction}
+\loadchapter{Background}{Background}
+\loadchapter{Methodology}{Methodology}
+\loadchapter{Evaluation}{Evaluation}
+\loadchapter{RelatedWork}{Related Work}
+\loadchapter{Conclusion}{Conclusion}
 
 
 \clearpage
+
 
 %% Appendices
 %% ----------------------------------------------------------------
