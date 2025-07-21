@@ -49,9 +49,8 @@
             \textbf{Inter Layer Motion Prediction:} 
             Similar to AVC inter prediction, but the motion vectors, reference
             indices, and partitioning of the base layer MB are reused in the
-            enhancement layer. For dyadic spatial scalability, motion vectors
-            are upsampled by a factor of 2. Quarter-pel refinement can
-            optionally be applied to improve precision.
+            enhancement layer. For spatial scalability, motion vectors
+            are upsampled.
 
         \item 
             \textbf{Inter Layer Residual Prediction:} 
@@ -69,7 +68,7 @@
 
 
 \section{Macroblock Skips and Virtual Quality Levels}
-\label{sec:virtual_quality_levels}
+\label{sec:virtual-quality-levels}
     In this section, we investigate whether intermediate quality levels beyond
     the explicitly defined scalability layers can be created by partially
     omitting enhancement-layer data.
@@ -118,7 +117,6 @@
     \texttt{macroblock\_layer\_in\_scalable\_extension()} syntax. This allows us
     to drop enhancement layer data in a controlled way while preserving
     the decodability of the bitstream.
-    
 
     By skipping macroblocks in the enhancement layers, we create
     modified versions of the original bitstream that has degraded visual quality.
@@ -131,9 +129,8 @@
     transitions and more flexible adaptation to available network resources than
     conventional SVC layer switching.
 
-
-    In the following sections, we evaluate these virtual quality levels using
-    objective video quality metrics such as SSIM, PSNR, and VMAF, and assess
+    In Section \ref{sec:eval_virtual_quality_levels}, we evaluate these virtual quality levels using
+    objective video quality metrics such as SSIM and PSNR, and assess
     their potential for improving streaming adaptability under fluctuating
     network conditions.
 
@@ -173,3 +170,56 @@
     This enables reconstruction of the skipped macroblock while preserving visual quality.
 
 
+\section{Slice Importance}
+\label{sec:slice_imp}
+
+    \todo{add references}
+    While previous sections explored macroblock-level skipping for generating
+    virtual quality levels, this section introduces a complementary
+    approach based on slice importance.
+
+    The motivation for identifying slice importance stems from the observation
+    that not all slices contribute equally to the perceived visual quality of a
+    video.  As highlighted by Palmer et al., while some frame loss can be tolerated,
+    uncontrolled (i.e. random) losses can cause severe visual artifacts and
+    structural distortion in the video. Appel investigates frame-level
+    importance in H.264/AVC videos by analyzing reference structures and their
+    impact on visual quality under frame loss. This paper proposes several frame
+    prioritization schemes that assign higher importance to frames with direct
+    and transitive dependencies. The evaluation shows that dropping even a
+    single referenced frame early in the decoding chain can propagate visual
+    degradation across subsequent frames, reinforcing the need for a structured
+    approach to data omission. In SVC, we observe a similar opportunity
+    by examining the inter and intra-layer reference structures.
+
+    In AVC, Appel identifies unreferenced B-frames as candidates for dropping,
+    since their loss does not impact decoding of subsequent frames. Inspired by
+    this, we analyze the direct reference count of each slice in the SVC bitstream to
+    assess its importance. Specifically, we examine how often a given slice is
+    directly referenced by other slices, both within the same layer (intra-layer) and
+    across layers (inter-layer). A higher reference count indicates that a slice
+    serves as a dependency for multiple other slices, increasing its impact on
+    decoding quality. Therefore, we assign higher importance to slices with
+    greater reference counts, and drop those with low or no references. This
+    allows us to control quality degradation in a predictable way, ensuring that
+    visually and structurally significant content is retained even under
+    constrained conditions.
+
+    By ranking slices based on this heuristic, we can establish a  retention
+    priority. While macroblock skipping reduces bitrate per slice, slice
+    importance controls which slices should be dropped. When degrading the
+    bitstream to form virtual quality levels, low-priority slices are dropped
+    first, while high-priority ones are preserved. This enables controlled
+    degradation, ensuring that omitted content has minimal perceptual impact.
+
+    To implement slice-level dropping based on the computed importance, we
+    simply remove all macroblocks belonging to a selected slice from the
+    bitstream. Macroblocks are dropped using the macroblock skipping approach
+    described in Section \ref{sec:virtual-quality-levels}.  Importantly, we
+    retain the headers and preserve I-macroblocks that are
+    necessary for maintaining decodability. This ensures that the
+    resulting bitstream remains decodable, even when some slices are omitted. By
+    applying this method to low importance slices, we create
+    virtual quality levels with controlled and targeted degradation, avoiding
+    the pitfalls of random loss while offering finer granularity in quality
+    control.
